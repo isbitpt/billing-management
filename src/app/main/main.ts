@@ -1,29 +1,31 @@
+require('dotenv').config();
+
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import {DatabaseManager} from "./database";
+import {DatabaseManager} from './database';
 
-DatabaseManager.LoadAppDatabaseAsync()
+DatabaseManager.loadAppDatabaseAsync()
   .then(() => {
     const appContext = DatabaseManager.appDatabaseContext;
 
-    return appContext.databasesRepository.createNewDatabase(`TestBd${Math.random()}`, `123das`)
+    return appContext.databasesRepository.createNewDatabase(`TestBd${Math.random()}`, '123das');
   })
   .then(() => {
     const appContext = DatabaseManager.appDatabaseContext;
 
-    return appContext.databasesRepository.getAllDatabases()
+    return appContext.databasesRepository.getAllDatabases();
   }).then((databases) => {
 
     console.log(databases);
-})
+});
 
 
 
 let win: BrowserWindow = null;
-const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
+const args = process.argv.slice(1);
+  const serve = args.some(val => val === '--serve');
 
 function createWindow(): BrowserWindow {
 
@@ -98,8 +100,8 @@ function startAppRender(): void {
     });
 
     app.on('before-quit', async () => {
-      await DatabaseManager.CloseAndSave();
-    })
+      await DatabaseManager.closeAndSave();
+    });
 
   } catch (e) {
     // Catch Error
