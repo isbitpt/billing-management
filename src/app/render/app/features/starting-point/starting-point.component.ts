@@ -3,15 +3,15 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'isbit-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './starting-point.component.html',
+  styleUrls: ['./starting-point.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class StartingPointComponent implements OnInit {
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    console.log('HomeComponent INIT');
+    console.log('StartingPointComponent INIT');
   }
 
 }

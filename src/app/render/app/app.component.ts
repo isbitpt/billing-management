@@ -5,8 +5,7 @@ import { APP_CONFIG } from '../environments/environment';
 
 @Component({
   selector: 'isbit-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: '<router-outlet></router-outlet>'
 })
 export class AppComponent {
   constructor(
