@@ -3,6 +3,10 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
     "baseUrl": "",
+    "paths": {
+      "@isbit/features/*": ["app/features/*"],
+      "@isbit/store/*": ["app/store/*"]
+    },
     "types": [
       "node"
     ]
