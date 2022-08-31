@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": [
-    "app/**/*", // ignore nodeJs files
+    "app/**/*.js", // ignore nodeJs files
     "dist/**/*",
     "release/**/*"
   ],
@@ -25,13 +25,14 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "quotes": [2, "single"],
         "prefer-arrow/prefer-arrow-functions": 0,
         "@angular-eslint/directive-selector": 0,
         "@angular-eslint/component-selector": [
           "error",
           {
             "type": "element",
-            "prefix": "app",
+            "prefix": "isbit",
             "style": "kebab-case"
           }
         ]
