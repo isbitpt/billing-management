@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'isbit-home',
+  selector: 'isbit-management',
   templateUrl: './management.component.html',
   styleUrls: ['./management.component.scss']
 })

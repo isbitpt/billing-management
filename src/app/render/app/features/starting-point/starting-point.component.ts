@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'isbit-home',
+  selector: 'isbit-starting-point',
   templateUrl: './starting-point.component.html',
   styleUrls: ['./starting-point.component.scss']
 })
