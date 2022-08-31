@@ -23,7 +23,7 @@
     "e2e": "npm run build:prod && playwright test -c e2e/playwright.config.ts e2e/",
     "e2e:show-trace": "playwright show-trace e2e/tracing/trace.zip",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "lint": "ng lint"
+    "lint": "ng lint --fix"
   },
   "dependencies": {
     "@angular/common": "14.0.6",
@@ -34,10 +34,14 @@
     "@angular/platform-browser": "14.0.6",
     "@angular/platform-browser-dynamic": "14.0.6",
     "@angular/router": "14.0.6",
+    "better-sqlite3-multiple-ciphers": "^7.6.2",
+    "dotenv": "^16.0.1",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/typography": "^0.5.4",
     "rxjs": "7.5.6",
     "tslib": "^2.4.0",
+    "typeorm": "^0.3.9",
+    "uuid": "^8.3.2",
     "zone.js": "~0.11.6"
   },
   "devDependencies": {
@@ -53,6 +57,7 @@
     "@ngx-translate/core": "14.0.0",
     "@ngx-translate/http-loader": "7.0.0",
     "@playwright/test": "1.23.4",
+    "@types/better-sqlite3": "^7.6.0",
     "@types/jasmine": "4.0.3",
     "@types/jasminewd2": "2.0.10",
     "@types/node": "18.0.6",
