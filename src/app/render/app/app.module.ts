@@ -28,7 +28,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new Transla
         deps: [HttpClient]
       }
     }),
-    StoreModule.forRoot({})
+    StoreModule.forRoot({}),
   ],
   providers: [],
   bootstrap: [AppComponent]
