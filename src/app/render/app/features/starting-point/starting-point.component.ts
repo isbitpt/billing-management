@@ -14,4 +14,11 @@ export class StartingPointComponent implements OnInit {
     console.log('StartingPointComponent INIT');
   }
 
+  public handlerCreateNewDatabase(): void{
+    alert('Create new database');
+  }
+
+  public handlerSelectDatabase(): void{
+    alert('handlerSelectDatabase is clicked');
+  }
 }
