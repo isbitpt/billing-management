@@ -5,7 +5,6 @@ import {Constants} from '../Constants';
 import {UserDatabasesRepository} from './repositories';
 import {UserDatabase} from './entities/UserDatabase';
 import {DataSource} from 'typeorm';
-import * as uuid from 'uuid';
 
 export class DatabaseManager {
   static #context: DatabaseContext | null = null;
@@ -35,22 +34,14 @@ export class DatabaseManager {
   }
 
   public static async loadAppDatabaseAsync(): Promise<void> {
-    if (!process.env.APP_DB_KEY)
-      {throw new Error('Missing env key \'APP_DB_KEY\', should be a anything alphanumeric');}
-
-    const file = path.join(Constants.AppRoot, 'db.enc');
+    const file = path.join(Constants.AppRoot, 'db.sqlite');
     const existsDb = fs.existsSync(file);
 
     this.#appDb = new DataSource({
       database: file,
       type: 'better-sqlite3',
-      key: process.env.APP_DB_KEY,
       driver: require('better-sqlite3-multiple-ciphers'),
       entities: [ UserDatabase ],
-      prepareDatabase: db => {
-        db.pragma(`rekey = ${process.env.APP_DB_KEY}`);
-        db.pragma('cipher = \'sqlcipher\'');
-      },
       verbose: console.log
     });
 
@@ -103,10 +94,6 @@ export class DatabaseManager {
 
       }
     };
-  }
-
-  public static async closeAndSave(): Promise<void> {
-    await this.#appDb.destroy();
   }
 }
 

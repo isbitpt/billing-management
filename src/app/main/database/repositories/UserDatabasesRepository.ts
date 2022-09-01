@@ -31,6 +31,10 @@ export class UserDatabasesRepository {
       id: bdId
     });
 
+    if (currentBd == null) {
+      return null;
+    }
+
     const usedKey = crypto.createHmac('sha1', pKey).digest('hex');
 
     if (currentBd.privateKey === usedKey) {
