@@ -22,8 +22,7 @@
       "extends": [
         "plugin:@angular-eslint/ng-cli-compat",
         "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:@ngrx/recommended"
+        "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
         "quotes": [
@@ -53,6 +52,7 @@
     },
     {
       "files": [
+<<<<<<< HEAD
         "*.js"
       ],
       "parserOptions": {
@@ -61,6 +61,13 @@
       "env": {
         "es6": true
       }
+=======
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:@ngrx/recommended"
+      ]
+>>>>>>> origin/main
     }
   ]
 }

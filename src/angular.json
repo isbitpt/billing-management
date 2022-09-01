@@ -37,6 +37,11 @@
             "styles": [
               "app/render/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./app/render/app/core"
+              ]
+            },
             "scripts": [],
             "customWebpackConfig": {
               "path": "./angular.webpack.js",
