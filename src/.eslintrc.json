@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": [
-    "app/**/*.js", // ignore nodeJs files
+    "app/**/*.js",
     "dist/**/*",
     "release/**/*"
   ],
@@ -25,7 +25,10 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        "quotes": [2, "single"],
+        "quotes": [
+          2,
+          "single"
+        ],
         "prefer-arrow/prefer-arrow-functions": 0,
         "@angular-eslint/directive-selector": 0,
         "@angular-eslint/component-selector": [
@@ -46,6 +49,14 @@
         "plugin:@angular-eslint/template/recommended"
       ],
       "rules": {}
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:@ngrx/recommended"
+      ]
     }
   ]
 }

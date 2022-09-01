@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'isbit-starting-point',
-  templateUrl: './starting-point.component.html',
-  styleUrls: ['./starting-point.component.scss']
+  selector: 'isbit-management',
+  templateUrl: './management.component.html',
+  styleUrls: ['./management.component.scss']
 })
-export class StartingPointComponent implements OnInit {
+export class ManagementComponent implements OnInit {
 
   constructor(private router: Router) { }
 
