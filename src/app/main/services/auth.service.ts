@@ -1,4 +1,4 @@
-import {UserDatabase} from './models/UserDatabase';
+import {UserDatabase} from './models/user-database';
 import {DatabaseManager} from '../database';
 
 export class AuthService {

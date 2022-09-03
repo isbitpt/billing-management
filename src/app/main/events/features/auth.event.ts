@@ -1,4 +1,4 @@
-import {AppEvent, EventRegistry} from '../EventManager';
+import {AppEvent, EventRegistry} from '../event.manager';
 import {AuthLoadDatabasesResult, AuthLoginToBdResult, UserDatabase} from '../../../shared';
 import {AuthService} from '../../services';
 

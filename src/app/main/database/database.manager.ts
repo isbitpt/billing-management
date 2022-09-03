@@ -1,9 +1,9 @@
 import * as path from 'path';
 import * as fs from 'fs';
 
-import {Constants} from '../Constants';
+import {Constants} from '../constants';
 import {UserDatabasesRepository} from './repositories';
-import {UserDatabase} from './entities/UserDatabase';
+import {UserDatabaseEntity} from './entities/user-database.entity';
 import {DataSource} from 'typeorm';
 
 export class DatabaseManager {
@@ -41,7 +41,7 @@ export class DatabaseManager {
       database: file,
       type: 'better-sqlite3',
       driver: require('better-sqlite3-multiple-ciphers'),
-      entities: [ UserDatabase ],
+      entities: [ UserDatabaseEntity ],
       verbose: console.log
     });
 
@@ -54,7 +54,7 @@ export class DatabaseManager {
     DatabaseManager.#context = {
       ...DatabaseManager.#context,
       appContext: {
-        databasesRepository: new UserDatabasesRepository(this.#appDb.getRepository(UserDatabase))
+        databasesRepository: new UserDatabasesRepository(this.#appDb.getRepository(UserDatabaseEntity))
       }
     };
   }
@@ -75,7 +75,7 @@ export class DatabaseManager {
       type: 'better-sqlite3',
       key: dbKey,
       driver: require('better-sqlite3-multiple-ciphers'),
-      entities: [ UserDatabase ],
+      entities: [ UserDatabaseEntity ],
       prepareDatabase: db => {
         db.pragma('cipher=\'sqlcipher\'');
       },

@@ -1,19 +1,19 @@
 import {Repository} from 'typeorm/repository/Repository';
-import {UserDatabase} from '../entities/UserDatabase';
+import {UserDatabaseEntity} from '../entities/user-database.entity';
 import {v4 as uuidv4} from 'uuid';
 import * as crypto from 'crypto';
 
 export class UserDatabasesRepository {
-  constructor(private dbRepo: Repository<UserDatabase>) {
+  constructor(private dbRepo: Repository<UserDatabaseEntity>) {
   }
 
-  public async getAllDatabases(): Promise<UserDatabase[]> {
+  public async getAllDatabases(): Promise<UserDatabaseEntity[]> {
     return await this.dbRepo.findBy({
       active: true
     });
   }
 
-  public async createNewDatabase(dbName: string, pKey: string): Promise<UserDatabase> {
+  public async createNewDatabase(dbName: string, pKey: string): Promise<UserDatabaseEntity> {
     const createdDb = this.dbRepo.create({
       id: uuidv4(),
       active: true,
@@ -26,7 +26,7 @@ export class UserDatabasesRepository {
     return createdDb;
   }
 
-  public async auth(bdId: string, pKey: string): Promise<UserDatabase | null> {
+  public async auth(bdId: string, pKey: string): Promise<UserDatabaseEntity | null> {
     const currentBd = await this.dbRepo.findOneBy({
       id: bdId
     });

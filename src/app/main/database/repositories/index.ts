@@ -1,1 +1,1 @@
-export * from "./UserDatabasesRepository"
+export * from "./user-databases.repository"
