@@ -1,15 +1,17 @@
 import {ipcMain} from 'electron';
-import * as events from './features';
+import {Container} from 'inversify';
+import {TYPES} from '../ioc';
 
 export class EventManager {
   static #events: AppEvent[] = [];
 
-  public static registerEvents(): void {
+  public static async registerEvents(container: Container): Promise<void> {
     const appEvents: AppEvent[] = [];
 
-    Object.entries(events).forEach(([name, eventClass]) => {
-      const eventRegistry: EventRegistry = new eventClass();
-      appEvents.push(...eventRegistry.getEvents());
+    const registedEvents = await container.getAllAsync(TYPES.AppEvent);
+
+    registedEvents.forEach((registedEvent: EventRegistry)  => {
+      appEvents.push(...registedEvent.getEvents());
     });
 
     appEvents.forEach(event => {
