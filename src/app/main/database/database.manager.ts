@@ -1,11 +1,10 @@
 import * as path from 'path';
 import * as fs from 'fs';
 
-import {Constants} from '../Constants';
+import {Constants} from '../constants';
 import {UserDatabasesRepository} from './repositories';
-import {UserDatabase} from './entities/UserDatabase';
+import {UserDatabaseEntity} from './entities/user-database.entity';
 import {DataSource} from 'typeorm';
-import * as uuid from 'uuid';
 
 export class DatabaseManager {
   static #context: DatabaseContext | null = null;
@@ -35,22 +34,14 @@ export class DatabaseManager {
   }
 
   public static async loadAppDatabaseAsync(): Promise<void> {
-    if (!process.env.APP_DB_KEY)
-      {throw new Error('Missing env key \'APP_DB_KEY\', should be a anything alphanumeric');}
-
-    const file = path.join(Constants.AppRoot, 'db.enc');
+    const file = path.join(Constants.AppRoot, 'db.sqlite');
     const existsDb = fs.existsSync(file);
 
     this.#appDb = new DataSource({
       database: file,
       type: 'better-sqlite3',
-      key: process.env.APP_DB_KEY,
       driver: require('better-sqlite3-multiple-ciphers'),
-      entities: [ UserDatabase ],
-      prepareDatabase: db => {
-        db.pragma(`rekey = ${process.env.APP_DB_KEY}`);
-        db.pragma('cipher = \'sqlcipher\'');
-      },
+      entities: [ UserDatabaseEntity ],
       verbose: console.log
     });
 
@@ -63,7 +54,7 @@ export class DatabaseManager {
     DatabaseManager.#context = {
       ...DatabaseManager.#context,
       appContext: {
-        databasesRepository: new UserDatabasesRepository(this.#appDb.getRepository(UserDatabase))
+        databasesRepository: new UserDatabasesRepository(this.#appDb.getRepository(UserDatabaseEntity))
       }
     };
   }
@@ -84,7 +75,7 @@ export class DatabaseManager {
       type: 'better-sqlite3',
       key: dbKey,
       driver: require('better-sqlite3-multiple-ciphers'),
-      entities: [ UserDatabase ],
+      entities: [ UserDatabaseEntity ],
       prepareDatabase: db => {
         db.pragma('cipher=\'sqlcipher\'');
       },
@@ -103,10 +94,6 @@ export class DatabaseManager {
 
       }
     };
-  }
-
-  public static async closeAndSave(): Promise<void> {
-    await this.#appDb.destroy();
   }
 }
 

@@ -1,3 +1,3 @@
 export * from "./repositories";
 
-export * from "./DatabaseManager";
+export * from "./database.manager";

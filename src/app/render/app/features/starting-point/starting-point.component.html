@@ -10,7 +10,15 @@
 
   </div>
 
-  <input type="password" class="w-2/6 h-12 text-white p-2 bg-gray-900 border-2 border-gray-600" placeholder="Password for unlock"/>
-  <button class="bg-white w-2/6 h-8">UNLOCK</button>
+  <select required (change)="onDbChange()" [(ngModel)]="selectedDb">
+    <option *ngFor="let database of databases" [value]="database.id">{{database.name}}</option>
+  </select>
+
+  <input [(ngModel)]="password"
+         type="password"
+         class="w-2/6 h-12 text-white p-2 bg-gray-900 border-2 border-gray-600"
+         placeholder="Password for unlock"/>
+  <button class="bg-white w-2/6 h-8"
+    (click)="authToDb()">UNLOCK</button>
 
 </div>
