@@ -1,14 +1,21 @@
-import {AppEvent, EventRegistry} from '../event.manager';
-import {AuthLoadDatabasesResult, AuthLoginToBdResult, UserDatabase} from '../../../shared';
-import {AuthService} from '../../services';
+import {AppEvent, EventRegistry} from '../managers/event.manager';
+import {AuthLoadDatabasesResult, AuthLoginToBdResult} from '../../shared';
+import {AuthService} from '../services';
+import {provide} from 'inversify-binding-decorators';
+import {TYPES} from '../ioc';
+import {inject} from 'inversify';
 
-export class AuthEvents implements EventRegistry{
+@provide(TYPES.AppEvent)
+export class AuthEvents implements EventRegistry {
+
+  @inject(AuthService) private authService: AuthService;
+
   public getEvents(): AppEvent[] {
     return [{
       id: 'auth:loadDatabases',
       invokable: true,
       callback: async (evt) => {
-        const loadedDatabases = await AuthService.loadDatabases();
+        const loadedDatabases = await this.authService.loadDatabases();
 
         const result: AuthLoadDatabasesResult = {
           databases: loadedDatabases.map(db => ({
@@ -25,7 +32,7 @@ export class AuthEvents implements EventRegistry{
       id: 'auth:canLogin',
       invokable: true,
       callback: async (evt, bdId: string, pKey: string) => {
-        const authedDatabase = await AuthService.loginToBd(bdId, pKey);
+        const authedDatabase = await this.authService.loginToBd(bdId, pKey);
 
         const result: AuthLoginToBdResult = {
           loggedBd: authedDatabase == null ? null : {
