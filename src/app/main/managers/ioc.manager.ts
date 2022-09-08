@@ -1,10 +1,12 @@
 //Import these to run decorators
-import '../events';
-import '../services';
-import '../database';
+import '@isbit/main/events';
+import '@isbit/main/services';
+import '@isbit/main/database';
 
 import { Container } from 'inversify';
 import {buildProviderModule} from 'inversify-binding-decorators';
+import {DatabaseManager, Symbols} from './database.manager';
+
 
 export class IoCManager {
   readonly #container: Container;
@@ -25,6 +27,7 @@ export class IoCManager {
   }
 
   private wire(): void {
-    //Manual wires can be done here
+    this.#container.bind(Symbols.appDB).toDynamicValue(() => DatabaseManager.getDatabaseInstance(Symbols.appDB));
+    this.#container.bind(Symbols.userDb).toDynamicValue(() => DatabaseManager.getDatabaseInstance(Symbols.userDb));
   }
 }

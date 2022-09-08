@@ -20,13 +20,10 @@ class App {
   constructor() {
     this.#container = (new IoCManager()).container;
   }
-
-
+  
   public async startApp(): Promise<void> {
-    await DatabaseManager.initDB(this.#container);
-
+    await DatabaseManager.initDB();
     await EventManager.registerEvents(this.#container);
-
     this.registerElectronEvents();
 
     const testDb = (process.env.TEST_DB || false ) === '1';

@@ -4,7 +4,6 @@ import * as fs from 'fs';
 import {Constants} from '../constants';
 import {UserDatabaseEntity} from '../database/entities/user-database.entity';
 import {DataSource} from 'typeorm';
-import {Container} from 'inversify';
 
 export class Symbols {
   public static readonly appDB = Symbol.for('AppDB');
@@ -12,17 +11,28 @@ export class Symbols {
 }
 
 export class DatabaseManager {
-  static #appDb: DataSource;
-  static #userDB: DataSource;
+  static #instance: DatabaseManager;
 
-  public static async initDB(container: Container): Promise<void> {
-    await DatabaseManager.loadAppDatabaseAsync();
+  #appDb: DataSource;
+  #userDB: DataSource;
 
-    container.bind<DataSource>(Symbols.appDB).toDynamicValue(() => DatabaseManager.#appDb).inRequestScope();
-    container.bind<DataSource>(Symbols.userDb).toDynamicValue(() => DatabaseManager.#userDB).inRequestScope();
+  private constructor() {}
+
+  public static async initDB(): Promise<void> {
+    this.#instance = new DatabaseManager();
+    await this.#instance.loadAppDatabaseAsync();
   }
 
-  private static async loadAppDatabaseAsync(): Promise<void> {
+  public static getDatabaseInstance(symbol: Symbols): DataSource {
+    switch (symbol) {
+      case Symbols.appDB:
+        return this.#instance.#appDb;
+      case Symbols.userDb:
+        return this.#instance.#userDB;
+    }
+  }
+
+  private async loadAppDatabaseAsync(): Promise<void> {
     const file = path.join(Constants.AppRoot, 'db.sqlite');
     const existsDb = fs.existsSync(file);
 
@@ -41,7 +51,7 @@ export class DatabaseManager {
     }
   }
 
-  private static async loadUserDatabaseAsync(bdId: string, dbKey: string): Promise<void> {
+  private async loadUserDatabaseAsync(bdId: string, dbKey: string): Promise<void> {
     /*const authedBd = await this.#context.appContext.databasesRepository.auth(bdId, dbKey);
 
     if (authedBd == null) {
