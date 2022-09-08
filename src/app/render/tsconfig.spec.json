@@ -2,6 +2,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
+    "paths": {
+      "@isbit/shared": ["../shared"],
+      "@isbit/render/features/*": ["app/features/*"],
+      "@isbit/render/store/*": ["app/store/*"],
+      "@isbit/render/core/*": ["app/core/*"],
+    },
     "types": [
       "jasmine",
       "node"

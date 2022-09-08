@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "./build",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -17,7 +18,15 @@
       "es2015",
       "dom",
       "es6"
-    ]
+    ],
+    "paths": {
+      "@isbit/main/managers": ["./app/main/managers"],
+      "@isbit/main/ioc": ["./app/main/ioc"],
+      "@isbit/main/services": ["./app/main/services"],
+      "@isbit/main/events": ["./app/main/events"],
+      "@isbit/main/database": ["./app/main/database"],
+      "@isbit/shared": ["./app/shared"]
+    }
   },
   "files": [
     "app/main/main.ts"

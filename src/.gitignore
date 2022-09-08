@@ -2,6 +2,7 @@
 
 .env
 *.orig
+build
 
 #Databases
 app/**/*.sqlite*
