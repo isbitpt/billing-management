@@ -1,12 +1,12 @@
 import {Repository} from 'typeorm/repository/Repository';
-import {UserDatabaseEntity} from '../entities/user-database.entity';
+import {UserDatabaseEntity} from '../entities';
 import {v4 as uuidv4} from 'uuid';
 import * as crypto from 'crypto';
 import {inject} from 'inversify';
-import {Symbols} from '../../managers/database.manager';
+import {Symbols} from '@isbit/main/managers';
 import {DataSource} from 'typeorm';
 import {provide} from 'inversify-binding-decorators';
-import {TYPES} from '../../ioc';
+import {TYPES} from '@isbit/main/ioc';
 
 @provide(TYPES.Repository)
 export class UserDatabasesRepository {

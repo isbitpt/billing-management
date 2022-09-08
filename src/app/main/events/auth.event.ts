@@ -1,8 +1,8 @@
-import {AppEvent, EventRegistry} from '../managers/event.manager';
-import {AuthLoadDatabasesResult, AuthLoginToBdResult} from '../../shared';
-import {AuthService} from '../services';
+import {AppEvent, EventRegistry} from '@isbit/main/managers';
+import {AuthLoadDatabasesResult, AuthLoginToBdResult} from '@isbit/shared';
+import {AuthService} from '@isbit/main/services';
 import {provide} from 'inversify-binding-decorators';
-import {TYPES} from '../ioc';
+import {TYPES} from '@isbit/main/ioc';
 import {inject} from 'inversify';
 
 @provide(TYPES.AppEvent)

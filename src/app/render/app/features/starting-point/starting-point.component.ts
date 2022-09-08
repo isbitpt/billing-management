@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as sharedModels from '../../../../shared';
-import {UserDatabase} from '../../../../shared';
+import * as sharedModels from '@isbit/shared';
 
 const ipcRenderer = window.require('electron/renderer').ipcRenderer;
 
@@ -11,7 +10,7 @@ const ipcRenderer = window.require('electron/renderer').ipcRenderer;
   styleUrls: ['./starting-point.component.scss']
 })
 export class StartingPointComponent implements OnInit {
-  public databases: UserDatabase[];
+  public databases: sharedModels.UserDatabase[];
   public selectedDb = '';
   public password = '';
 
