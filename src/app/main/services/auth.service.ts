@@ -15,7 +15,7 @@ export class AuthService {
     return loadedDatabases;
   }
 
-  public async loginToBd(bdId: string, pkey: string): Promise<UserDatabase | null> {
+  public async loginDatabase(bdId: string, pkey: string): Promise<UserDatabase | null> {
     const loggedBd = await this.userDatabasesRepository
       .auth(bdId, pkey);
 

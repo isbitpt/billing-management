@@ -6,15 +6,15 @@ import {UserDatabaseEntity} from '../database/entities/user-database.entity';
 import {DataSource} from 'typeorm';
 
 export class Symbols {
-  public static readonly appDB = Symbol.for('AppDB');
-  public static readonly userDb = Symbol.for('UserDb');
+  public static readonly applicationDatabaseSymbol = Symbol.for('ApplicationDatabaseSymbol');
+  public static readonly financeManagementDatabaseSymbol = Symbol.for('FinanceManagementDatabaseSymbol');
 }
 
 export class DatabaseManager {
   static #instance: DatabaseManager;
 
-  #appDb: DataSource;
-  #userDB: DataSource;
+  #applicationDatabaseSymbol: DataSource;
+  #financeManagementDatabaseSymbol: DataSource;
 
   private constructor() {}
 
@@ -25,10 +25,10 @@ export class DatabaseManager {
 
   public static getDatabaseInstance(symbol: Symbols): DataSource {
     switch (symbol) {
-      case Symbols.appDB:
-        return this.#instance.#appDb;
-      case Symbols.userDb:
-        return this.#instance.#userDB;
+      case Symbols.applicationDatabaseSymbol:
+        return this.#instance.#applicationDatabaseSymbol;
+      case Symbols.financeManagementDatabaseSymbol:
+        return this.#instance.#financeManagementDatabaseSymbol;
     }
   }
 
@@ -36,7 +36,7 @@ export class DatabaseManager {
     const file = path.join(Constants.AppRoot, 'db.sqlite');
     const existsDb = fs.existsSync(file);
 
-    this.#appDb = new DataSource({
+    this.#applicationDatabaseSymbol = new DataSource({
       database: file,
       type: 'better-sqlite3',
       driver: require('better-sqlite3-multiple-ciphers'),
@@ -44,10 +44,10 @@ export class DatabaseManager {
       verbose: console.log
     });
 
-    await this.#appDb.initialize();
+    await this.#applicationDatabaseSymbol.initialize();
 
     if (!existsDb) {
-      await this.#appDb.synchronize();
+      await this.#applicationDatabaseSymbol.synchronize();
     }
   }
 
@@ -62,7 +62,7 @@ export class DatabaseManager {
     const file = `user_${fileName}.sqlite`;
     const existsDb = fs.existsSync(file);
 
-    this.#userDB = new DataSource({
+    this.#financeManagementDatabaseSymbol = new DataSource({
       database: file,
       type: 'better-sqlite3',
       key: dbKey,
@@ -74,10 +74,10 @@ export class DatabaseManager {
       verbose: console.log
     });
 
-    await this.#userDB.initialize();
+    await this.#financeManagementDatabaseSymbol.initialize();
 
     if (!existsDb) {
-      await this.#userDB.synchronize();
+      await this.#financeManagementDatabaseSymbol.synchronize();
     }*/
   }
 }

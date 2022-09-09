@@ -20,7 +20,7 @@ class App {
   constructor() {
     this.#container = (new IoCManager()).container;
   }
-  
+
   public async startApp(): Promise<void> {
     await DatabaseManager.initDB();
     await EventManager.registerEvents(this.#container);

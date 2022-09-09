@@ -32,7 +32,7 @@ export class AuthEvents implements EventRegistry {
       id: 'auth:canLogin',
       invokable: true,
       callback: async (evt, bdId: string, pKey: string) => {
-        const authedDatabase = await this.authService.loginToBd(bdId, pKey);
+        const authedDatabase = await this.authService.loginDatabase(bdId, pKey);
 
         const result: AuthLoginToBdResult = {
           loggedBd: authedDatabase == null ? null : {

@@ -12,7 +12,7 @@ import {TYPES} from '@isbit/main/ioc';
 export class UserDatabasesRepository {
   #dbRepo: Repository<UserDatabaseEntity>;
 
-  constructor(@inject(Symbols.appDB) appDb: DataSource) {
+  constructor(@inject(Symbols.applicationDatabaseSymbol) appDb: DataSource) {
     this.#dbRepo = appDb.getRepository(UserDatabaseEntity);
   }
 
