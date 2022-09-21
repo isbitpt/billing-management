@@ -3,16 +3,16 @@ import {UserDatabaseEntity} from '../entities';
 import {v4 as uuidv4} from 'uuid';
 import * as crypto from 'crypto';
 import {inject} from 'inversify';
-import {Symbols} from '@isbit/main/managers';
 import {DataSource} from 'typeorm';
 import {provide} from 'inversify-binding-decorators';
 import {TYPES} from '@isbit/main/ioc';
+import {DatabaseSymbols} from '../database-symbols';
 
 @provide(TYPES.Repository)
 export class UserDatabasesRepository {
   #dbRepo: Repository<UserDatabaseEntity>;
 
-  constructor(@inject(Symbols.applicationDatabaseSymbol) appDb: DataSource) {
+  constructor(@inject(DatabaseSymbols.applicationDatabaseSymbol) appDb: DataSource) {
     this.#dbRepo = appDb.getRepository(UserDatabaseEntity);
   }
 

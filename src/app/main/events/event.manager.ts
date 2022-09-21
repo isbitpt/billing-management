@@ -1,6 +1,8 @@
 import {ipcMain} from 'electron';
 import {Container} from 'inversify';
-import {TYPES} from '../ioc';
+import {TYPES} from '@isbit/main/ioc';
+import {AppEvent} from './app-event';
+import {EventRegistry} from './event-registry';
 
 export class EventManager {
   static #events: AppEvent[] = [];
@@ -8,10 +10,10 @@ export class EventManager {
   public static async registerEvents(container: Container): Promise<void> {
     const appEvents: AppEvent[] = [];
 
-    const registedEvents = await container.getAllAsync(TYPES.AppEvent);
+    const registeredEvents = await container.getAllAsync(TYPES.AppEvent);
 
-    registedEvents.forEach((registedEvent: EventRegistry)  => {
-      appEvents.push(...registedEvent.getEvents());
+    registeredEvents.forEach((registeredEvent: EventRegistry)  => {
+      appEvents.push(...registeredEvent.getEvents());
     });
 
     appEvents.forEach(event => {
@@ -45,14 +47,4 @@ export class EventManager {
 
     appEvent.callback(event, ...args);
   }
-}
-
-export interface EventRegistry {
-  getEvents(): AppEvent[];
-}
-
-export interface AppEvent {
-  id: string;
-  invokable: boolean;
-  callback: (event?: Electron.IpcMainEvent, ...args: any[]) => void;
 }

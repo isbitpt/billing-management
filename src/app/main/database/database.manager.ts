@@ -2,13 +2,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 import {Constants} from '../constants';
-import {UserDatabaseEntity} from '../database/entities/user-database.entity';
+import {UserDatabaseEntity} from './entities';
 import {DataSource} from 'typeorm';
-
-export class Symbols {
-  public static readonly applicationDatabaseSymbol = Symbol.for('ApplicationDatabaseSymbol');
-  public static readonly financeManagementDatabaseSymbol = Symbol.for('FinanceManagementDatabaseSymbol');
-}
+import {DatabaseSymbols} from './database-symbols';
 
 export class DatabaseManager {
   static #instance: DatabaseManager;
@@ -23,11 +19,11 @@ export class DatabaseManager {
     await this.#instance.loadAppDatabaseAsync();
   }
 
-  public static getDatabaseInstance(symbol: Symbols): DataSource {
+  public static getDatabaseInstance(symbol: DatabaseSymbols): DataSource {
     switch (symbol) {
-      case Symbols.applicationDatabaseSymbol:
+      case DatabaseSymbols.applicationDatabaseSymbol:
         return this.#instance.#applicationDatabaseSymbol;
-      case Symbols.financeManagementDatabaseSymbol:
+      case DatabaseSymbols.financeManagementDatabaseSymbol:
         return this.#instance.#financeManagementDatabaseSymbol;
     }
   }

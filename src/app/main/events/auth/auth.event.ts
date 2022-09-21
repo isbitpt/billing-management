@@ -1,9 +1,10 @@
-import {AppEvent, EventRegistry} from '@isbit/main/managers';
 import {AuthLoadDatabasesResult, AuthLoginToBdResult} from '@isbit/shared';
 import {AuthService} from '@isbit/main/services';
 import {provide} from 'inversify-binding-decorators';
 import {TYPES} from '@isbit/main/ioc';
 import {inject} from 'inversify';
+import {EventRegistry} from '../event-registry';
+import {AppEvent} from '../app-event';
 
 @provide(TYPES.AppEvent)
 export class AuthEvents implements EventRegistry {
@@ -14,7 +15,7 @@ export class AuthEvents implements EventRegistry {
     return [{
       id: 'auth:loadDatabases',
       invokable: true,
-      callback: async (evt) => {
+      callback: async () => {
         const loadedDatabases = await this.authService.loadDatabases();
 
         const result: AuthLoadDatabasesResult = {

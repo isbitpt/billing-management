@@ -22,7 +22,6 @@
       "es6"
     ],
     "paths": {
-      "@isbit/main/managers": ["./app/main/managers"],
       "@isbit/main/ioc": ["./app/main/ioc"],
       "@isbit/main/services": ["./app/main/services"],
       "@isbit/main/events": ["./app/main/events"],

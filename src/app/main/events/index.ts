@@ -1,1 +1,1 @@
-export * from './auth.event';
+export * from './auth/auth.event';

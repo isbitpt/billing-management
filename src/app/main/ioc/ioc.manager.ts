@@ -5,7 +5,8 @@ import '@isbit/main/database';
 
 import { Container } from 'inversify';
 import {buildProviderModule} from 'inversify-binding-decorators';
-import {DatabaseManager, Symbols} from './database.manager';
+import {DatabaseSymbols} from '../database/database-symbols';
+import {DatabaseManager} from '../database/database.manager';
 
 
 export class IoCManager {
@@ -28,10 +29,10 @@ export class IoCManager {
 
   private wire(): void {
     this.#container
-      .bind(Symbols.applicationDatabaseSymbol)
-      .toDynamicValue(() => DatabaseManager.getDatabaseInstance(Symbols.applicationDatabaseSymbol));
+      .bind(DatabaseSymbols.applicationDatabaseSymbol)
+      .toDynamicValue(() => DatabaseManager.getDatabaseInstance(DatabaseSymbols.applicationDatabaseSymbol));
     this.#container
-      .bind(Symbols.financeManagementDatabaseSymbol)
-      .toDynamicValue(() => DatabaseManager.getDatabaseInstance(Symbols.financeManagementDatabaseSymbol));
+      .bind(DatabaseSymbols.financeManagementDatabaseSymbol)
+      .toDynamicValue(() => DatabaseManager.getDatabaseInstance(DatabaseSymbols.financeManagementDatabaseSymbol));
   }
 }
