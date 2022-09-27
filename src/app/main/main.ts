@@ -1,34 +1,45 @@
 require('dotenv').config();
+import 'reflect-metadata';
 
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import {EventManager} from './events';
-import {DatabaseManager} from './database';
+import {Container} from 'inversify';
+
+import {IoCManager} from './ioc/ioc.manager';
+import {DatabaseManager} from './database/database.manager';
+import {EventManager} from './events/event.manager';
+
+import {UserDatabasesRepository} from './database';
+import {TYPES} from './ioc';
+
 
 const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
 
 class App {
   #win: BrowserWindow = null;
+  readonly #container: Container;
+
+  constructor() {
+    this.#container = (new IoCManager()).container;
+  }
 
   public async startApp(): Promise<void> {
+    await DatabaseManager.initDB();
+    await EventManager.registerEvents(this.#container);
+    this.registerElectronEvents();
+
     const testDb = (process.env.TEST_DB || false ) === '1';
 
-    await DatabaseManager.loadAppDatabaseAsync();
-
     if (testDb) {
-      const appContext = DatabaseManager.appDatabaseContext;
-      await appContext.databasesRepository.createNewDatabase(`TestBd${Math.random()}`, '123das');
+      const userDatabasesRepository = this.#container.get<UserDatabasesRepository>(TYPES.Repository);
+      await userDatabasesRepository.createNewDatabase(`TestBd${Math.random()}`, '123das');
 
-      const loadedDatabases = await appContext.databasesRepository.getAllDatabases();
+      const loadedDatabases = await userDatabasesRepository.getAllDatabases();
       console.log(loadedDatabases);
     }
-
-    EventManager.registerEvents();
-
-    this.registerElectronEvents();
 
     await app.whenReady();
 

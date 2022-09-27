@@ -4,11 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('@isbit/features/starting-point/starting-point.module').then(m => m.StartingPointModule)
+    loadChildren: () => import('@isbit/render/features/starting-point/starting-point.module').then(m => m.StartingPointModule)
   },
   {
     path: 'management',
-    loadChildren: () => import('@isbit/features/management/management.module').then(m => m.ManagementModule)
+    loadChildren: () => import('@isbit/render/features/management/management.module').then(m => m.ManagementModule)
   }
 ];
 

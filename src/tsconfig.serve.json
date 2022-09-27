@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "./build",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -8,14 +9,24 @@
     "module": "commonjs",
     "target": "es2015",
     "types": [
-      "node"
+      "node",
+      "reflect-metadata"
     ],
     "lib": [
       "es2017",
       "es2016",
       "es2015",
-      "dom"
-    ]
+      "dom",
+      "es6"
+    ],
+    "paths": {
+      "@isbit/main/managers": ["./app/main/managers"],
+      "@isbit/main/ioc": ["./app/main/ioc"],
+      "@isbit/main/services": ["./app/main/services"],
+      "@isbit/main/events": ["./app/main/events"],
+      "@isbit/main/database": ["./app/main/database"],
+      "@isbit/shared": ["./app/shared"]
+    }
   },
   "files": [
     "app/main/main.ts"

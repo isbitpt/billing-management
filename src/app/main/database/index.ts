@@ -1,3 +1,2 @@
-export * from "./repositories";
-
-export * from "./database.manager";
+export * from './repositories';
+export * from './entities';

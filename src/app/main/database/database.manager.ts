@@ -2,42 +2,37 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 import {Constants} from '../constants';
-import {UserDatabasesRepository} from './repositories';
-import {UserDatabaseEntity} from './entities/user-database.entity';
+import {UserDatabaseEntity} from './entities';
 import {DataSource} from 'typeorm';
+import {DatabaseSymbols} from './database-symbols';
 
 export class DatabaseManager {
-  static #context: DatabaseContext | null = null;
-  static #appDb: DataSource;
-  static #userDB: DataSource;
+  static #instance: DatabaseManager;
 
-  public static get isUserDbLoaded(): boolean {
-    return DatabaseManager.#context != null && DatabaseManager.#context.userContext != null;
+  #applicationDatabaseSymbol: DataSource;
+  #financeManagementDatabaseSymbol: DataSource;
+
+  private constructor() {}
+
+  public static async initDB(): Promise<void> {
+    this.#instance = new DatabaseManager();
+    await this.#instance.loadAppDatabaseAsync();
   }
 
-  public static get isAppDbLoaded(): boolean {
-    return DatabaseManager.#context != null && DatabaseManager.#context.appContext != null;
+  public static getDatabaseInstance(symbol: DatabaseSymbols): DataSource {
+    switch (symbol) {
+      case DatabaseSymbols.applicationDatabaseSymbol:
+        return this.#instance.#applicationDatabaseSymbol;
+      case DatabaseSymbols.financeManagementDatabaseSymbol:
+        return this.#instance.#financeManagementDatabaseSymbol;
+    }
   }
 
-  public static get appDatabaseContext(): AppDatabaseContext {
-    if (!DatabaseManager.isAppDbLoaded)
-    {throw new Error('Database is not ready');}
-
-    return DatabaseManager.#context.appContext;
-  }
-
-  public static get userDatabaseContext(): UserDatabaseContext {
-    if (!DatabaseManager.isUserDbLoaded)
-    {throw new Error('User database not loaded');}
-
-    return DatabaseManager.#context.userContext;
-  }
-
-  public static async loadAppDatabaseAsync(): Promise<void> {
+  private async loadAppDatabaseAsync(): Promise<void> {
     const file = path.join(Constants.AppRoot, 'db.sqlite');
     const existsDb = fs.existsSync(file);
 
-    this.#appDb = new DataSource({
+    this.#applicationDatabaseSymbol = new DataSource({
       database: file,
       type: 'better-sqlite3',
       driver: require('better-sqlite3-multiple-ciphers'),
@@ -45,22 +40,15 @@ export class DatabaseManager {
       verbose: console.log
     });
 
-    await this.#appDb.initialize();
+    await this.#applicationDatabaseSymbol.initialize();
 
     if (!existsDb) {
-      await this.#appDb.synchronize();
+      await this.#applicationDatabaseSymbol.synchronize();
     }
-
-    DatabaseManager.#context = {
-      ...DatabaseManager.#context,
-      appContext: {
-        databasesRepository: new UserDatabasesRepository(this.#appDb.getRepository(UserDatabaseEntity))
-      }
-    };
   }
 
-  public static async loadUserDatabaseAsync(bdId: string, dbKey: string): Promise<void> {
-    const authedBd = await this.#context.appContext.databasesRepository.auth(bdId, dbKey);
+  private async loadUserDatabaseAsync(bdId: string, dbKey: string): Promise<void> {
+    /*const authedBd = await this.#context.appContext.databasesRepository.auth(bdId, dbKey);
 
     if (authedBd == null) {
       throw new Error('Cannot login into this database.');
@@ -70,7 +58,7 @@ export class DatabaseManager {
     const file = `user_${fileName}.sqlite`;
     const existsDb = fs.existsSync(file);
 
-    this.#userDB = new DataSource({
+    this.#financeManagementDatabaseSymbol = new DataSource({
       database: file,
       type: 'better-sqlite3',
       key: dbKey,
@@ -82,31 +70,10 @@ export class DatabaseManager {
       verbose: console.log
     });
 
-    await this.#userDB.initialize();
+    await this.#financeManagementDatabaseSymbol.initialize();
 
     if (!existsDb) {
-      await this.#userDB.synchronize();
-    }
-
-    DatabaseManager.#context = {
-      ...DatabaseManager.#context,
-      userContext: {
-
-      }
-    };
+      await this.#financeManagementDatabaseSymbol.synchronize();
+    }*/
   }
-}
-
-interface DatabaseContext {
-  appContext: AppDatabaseContext;
-  userContext: UserDatabaseContext;
-}
-
-interface AppDatabaseContext {
-  databasesRepository: UserDatabasesRepository;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface UserDatabaseContext {
-
 }
