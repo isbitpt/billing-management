@@ -1,19 +1,29 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import { StartingPointRoutingModule } from './starting-point-routing.module';
-import {StartingPointComponent} from './starting-point.component';
-import {FormsModule} from '@angular/forms';
+
+import {CoreModule} from '@isbit/render/core/core.module';
+import {StartingPointRoutingModule} from './starting-point-routing.module';
+import {AuthenticationModule} from '@isbit/render/core/modules/authentication/authentication.module';
+
+import {CONTAINERS} from '@isbit/render/features/starting-point/containers';
+import {StartingPointComponent} from '@isbit/render/features/starting-point/starting-point.component';
+import {DialogModule} from '@angular/cdk/dialog';
 
 
 @NgModule({
+  id: 'isbit-starting-point-module',
   declarations: [
+    ...CONTAINERS,
     StartingPointComponent
   ],
   imports: [
-    CommonModule,
-    StartingPointRoutingModule,
-    FormsModule
+    FormsModule,
+    DialogModule,
+    AuthenticationModule,
+    CoreModule,
+    ReactiveFormsModule,
+    StartingPointRoutingModule
   ]
 })
 export class StartingPointModule { }

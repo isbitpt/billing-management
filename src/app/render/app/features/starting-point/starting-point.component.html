@@ -2,23 +2,9 @@
 
   <div class="flex flex-col w-full justify-center items-center gap-2">
     <h1 class="font-bold text-white text-5xl">BILLING MANAGEMENT</h1>
-
-    <div class="flex flex-row justify-center items-center w-full gap-2">
-      <button (click)="handlerCreateNewDatabase()" class="bg-white w-1/6 h-8">CREATE NEW DATABASE</button>
-      <button (click)="handlerSelectDatabase()" class="bg-white w-1/6 h-8">SELECT DATABASE</button>
-    </div>
-
+    <isbit-database-selector
+      class="flex flex-col w-full justify-center items-center gap-2 pl-10 pr-10 mt-5">
+    </isbit-database-selector>
   </div>
-
-  <select required (change)="onDbChange()" [(ngModel)]="selectedDb">
-    <option *ngFor="let database of databases" [value]="database.id">{{database.name}}</option>
-  </select>
-
-  <input [(ngModel)]="password"
-         type="password"
-         class="w-2/6 h-12 text-white p-2 bg-gray-900 border-2 border-gray-600"
-         placeholder="Password for unlock"/>
-  <button class="bg-white w-2/6 h-8"
-    (click)="authToDb()">UNLOCK</button>
 
 </div>

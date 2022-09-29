@@ -1,8 +1,13 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import '@angular/cdk/overlay-prebuilt.css';
 
 body, html{
   height: 100%;
-  width: 100%;
+  margin: 0;
+}
+
+.cdk-global-scrollblock {
+  overflow: hidden;
 }

@@ -1,2 +1,4 @@
-export * from './user-database-info.entity';
-export * from './user-database.entity';
+export * from './private-database.entity';
+export * from './public-database.entity';
+export * from './app-configuration.entity';
+export * from './app-database.entity';

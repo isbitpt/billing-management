@@ -1,1 +1,2 @@
-export * from './auth/auth.event';
+export * from './authentication/authentication.event';
+export * from './utilities/utilities.event';

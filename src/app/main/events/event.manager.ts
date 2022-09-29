@@ -18,9 +18,21 @@ export class EventManager {
 
     appEvents.forEach(event => {
       if (event.invokable) {
-        ipcMain.handle(event.id, event.callback);
+        if (Array.isArray(event.id)) {
+          (event.id as string[]).forEach(id => {
+            ipcMain.handle(id, event.callback);
+          });
+        } else {
+          ipcMain.handle(event.id, event.callback);
+        }
       } else {
-        ipcMain.on(event.id, event.callback);
+        if (Array.isArray(event.id)) {
+          (event.id as string[]).forEach(id => {
+            ipcMain.on(id, event.callback);
+          });
+        } else {
+          ipcMain.on(event.id, event.callback);
+        }
       }
 
       this.#events.push(event);
@@ -31,9 +43,21 @@ export class EventManager {
     this.#events.push(newEvent);
 
     if (newEvent.invokable) {
-      ipcMain.handle(newEvent.id, newEvent.callback);
+      if (Array.isArray(newEvent.id)) {
+        (newEvent.id as string[]).forEach(id => {
+          ipcMain.handle(id, newEvent.callback);
+        });
+      } else {
+        ipcMain.handle(newEvent.id, newEvent.callback);
+      }
     } else {
-      ipcMain.on(newEvent.id, newEvent.callback);
+      if (Array.isArray(newEvent.id)) {
+        (newEvent.id as string[]).forEach(id => {
+          ipcMain.on(id, newEvent.callback);
+        });
+      } else {
+        ipcMain.on(newEvent.id, newEvent.callback);
+      }
     }
   }
 

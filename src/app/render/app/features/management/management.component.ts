@@ -8,10 +8,15 @@ import { Router } from '@angular/router';
 })
 export class ManagementComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router) { }
 
   ngOnInit(): void {
     console.log('ManagementComponent INIT');
+  }
+
+  public goBack(): void {
+    this.router.navigate(['/']);
   }
 
   public handlerCreateNewDatabase(): void{

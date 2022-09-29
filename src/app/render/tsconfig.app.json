@@ -8,6 +8,7 @@
       "@isbit/render/features/*": ["app/features/*"],
       "@isbit/render/store/*": ["app/store/*"],
       "@isbit/render/core/*": ["app/core/*"],
+      "@isbit/render/core/modules/*": ["app/core/modules/*"]
     },
     "types": [
       "node"

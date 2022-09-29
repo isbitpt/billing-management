@@ -1,0 +1,6 @@
+<button (click)="selectFolder()" class="border-2 border-gray-600 bg-gray-900 text-white p-2">
+  <span #ref><ng-content></ng-content></span>
+  <span *ngIf="!ref.innerHTML.trim()">
+    Select Folder
+  </span>
+</button>

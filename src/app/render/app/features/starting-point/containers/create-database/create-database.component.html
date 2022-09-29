@@ -1,0 +1,28 @@
+<div class="w-full h-full flex flex-col gap-6 justify-center items-center bg-gray-900 p-10">
+  <h1 class="font-bold text-white text-3xl">CREATE DATABASE</h1>
+
+  <form class="flex flex-col justify-center items-center w-full gap-2"
+    [formGroup]="createDatabaseForm">
+    <isbit-folder-selector
+      (selectedFolders)="setDatabaseFolder($event)"
+      dialogTitle="Select Database Folder">Select Database Folder</isbit-folder-selector>
+
+    <div class="flex flex-row justify-center items-center w-full gap-2">
+      <input [formControlName]="createDatabaseFormFields.name"
+             type="text"
+             class="flex-col w-3/6 h-full text-white p-2 bg-gray-900 border-2 border-gray-600"
+             placeholder="Database Name"/>
+      <input [formControlName]="createDatabaseFormFields.privateKey"
+             type="password"
+             class="flex-col w-3/6 h-full text-white p-2 bg-gray-900 border-2 border-gray-600"
+             placeholder="Database Key"/>
+    </div>
+
+    <div class="flex flex-row justify-between items-center w-full gap-2">
+      <button class="border-2 border-gray-600 bg-gray-900 text-white p-2 w-2/6"
+              (click)="createDatabase()">Create</button>
+      <button class="border-2 border-gray-600 bg-gray-900 text-white p-2 w-2/6"
+              (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

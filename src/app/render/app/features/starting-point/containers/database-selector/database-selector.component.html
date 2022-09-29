@@ -1,0 +1,30 @@
+<div class="flex flex-row justify-center items-center w-full gap-2">
+  <button (click)="handlerCreateNewDatabase()" class="border-2 border-gray-600 text-white w-2/6 h-full p-2">CREATE NEW DATABASE</button>
+  <button (click)="handlerSelectDatabase()" class="border-2 border-gray-600 text-white w-2/6 h-full p-2">IMPORT DATABASE</button>
+</div>
+
+<form class="flex flex-col justify-center items-center w-full gap-2"
+  [formGroup]="authForm">
+  <div class="flex flex-row justify-center items-center w-full gap-3">
+    <label class="text-white">Selected Database:</label>
+    <select class="bg-gray-900 text-white border-2 border-gray-600"
+            (change)="onDbChange()"
+            [formControlName]="authFormKeys.selectedDatabase">
+      <option [ngValue]="null">Select Database</option>
+      <option *ngFor="let database of databases" [value]="database.id">{{database.name}}</option>
+    </select>
+    <button class="border-2 border-gray-600 text-white p-1"
+    (click)="removeDb()">Remove</button>
+  </div>
+
+  <input [formControlName]="authFormKeys.password"
+         type="password"
+         class="w-2/6 h-full text-white p-2 bg-gray-900 border-2 border-gray-600"
+         placeholder="Database Password"/>
+  <div class="flex flex-row items-center justify-center w-12">
+    <button class="border-2 border-gray-600 text-white p-3"
+            (click)="authToDb()">UNLOCK</button>
+  </div>
+</form>
+
+
