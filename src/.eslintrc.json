@@ -32,6 +32,9 @@
         ],
         "prefer-arrow/prefer-arrow-functions": 0,
         "@angular-eslint/directive-selector": 0,
+        "@ngrx/prefer-inline-action-props": 0,
+        "@ngrx/prefer-effect-callback-in-block-statement": 0,
+        "@typescript-eslint/no-empty-interface": 0,
         "@angular-eslint/component-selector": [
           "error",
           {

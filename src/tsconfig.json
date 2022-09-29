@@ -27,9 +27,12 @@
       "@isbit/main/events": ["./app/main/events"],
       "@isbit/main/database": ["./app/main/database"],
       "@isbit/shared": ["./app/shared"],
+      "@isbit/render/core/modules/*": ["./app/render/app/core/modules/*"],
+      "@isbit/render/core/*": ["./app/render/app/core/*"],
+
+
       "@isbit/render/features/*": ["./app/render/app/features/*"],
       "@isbit/render/store/*": ["./app/render/app/store/*"],
-      "@isbit/render/core/*": ["./app/render/app/core/*"]
     }
   },
   "exclude": [
