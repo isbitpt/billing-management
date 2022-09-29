@@ -32,7 +32,7 @@ export class IoCManager {
       .bind(DatabaseSymbols.applicationDatabaseSymbol)
       .toDynamicValue(() => DatabaseManager.getDatabaseInstance(DatabaseSymbols.applicationDatabaseSymbol));
     this.#container
-      .bind(DatabaseSymbols.financeManagementDatabaseSymbol)
-      .toDynamicValue(() => DatabaseManager.getDatabaseInstance(DatabaseSymbols.financeManagementDatabaseSymbol));
+      .bind(DatabaseSymbols.managementDatabaseSymbol)
+      .toDynamicValue(() => DatabaseManager.getDatabaseInstance(DatabaseSymbols.managementDatabaseSymbol));
   }
 }

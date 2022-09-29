@@ -1,3 +1,5 @@
+import {AuthService} from '@isbit/main/services';
+
 require('dotenv').config();
 import 'reflect-metadata';
 
@@ -5,15 +7,14 @@ import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 
+import installExtension, { REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import {Container} from 'inversify';
 
 import {IoCManager} from './ioc/ioc.manager';
 import {DatabaseManager} from './database/database.manager';
 import {EventManager} from './events/event.manager';
 
-import {UserDatabasesRepository} from './database';
 import {TYPES} from './ioc';
-
 
 const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
@@ -27,6 +28,10 @@ class App {
   }
 
   public async startApp(): Promise<void> {
+    if (serve) {
+      app.commandLine.appendSwitch('remote-debugging-port', '9229');
+    }
+
     await DatabaseManager.initDB();
     await EventManager.registerEvents(this.#container);
     this.registerElectronEvents();
@@ -34,14 +39,13 @@ class App {
     const testDb = (process.env.TEST_DB || false ) === '1';
 
     if (testDb) {
-      const userDatabasesRepository = this.#container.get<UserDatabasesRepository>(TYPES.Repository);
-      await userDatabasesRepository.createNewDatabase(`TestBd${Math.random()}`, '123das');
-
-      const loadedDatabases = await userDatabasesRepository.getAllDatabases();
-      console.log(loadedDatabases);
+      const authenticationService = this.#container.get<AuthService>(TYPES.Service);
+      await authenticationService.createDatabase(__dirname, `TestBd${Math.random()}`, '123das');
     }
 
     await app.whenReady();
+
+    await installExtension(REDUX_DEVTOOLS);
 
     this.createWindow();
   }
@@ -49,10 +53,12 @@ class App {
   private registerElectronEvents() {
     try {
       // Quit when all windows are closed.
-      app.on('window-all-closed', () => {
+      app.on('window-all-closed', async () => {
         // On OS X it is common for applications and their menu bar
         // to stay active until the user quits explicitly with Cmd + Q
         if (process.platform !== 'darwin') {
+          await DatabaseManager.close();
+
           app.quit();
         }
       });
@@ -66,13 +72,11 @@ class App {
       });
 
     } catch (e) {
-      // Catch Error
-      // throw e;
+      DatabaseManager.close();
     }
   }
 
   private createWindow(): BrowserWindow {
-
     const size = screen.getPrimaryDisplay().workAreaSize;
 
     // Create the browser window.
@@ -90,7 +94,9 @@ class App {
 
     if (serve) {
       const debug = require('electron-debug');
-      debug();
+      debug({
+        showDevTools: true
+      });
 
       require('electron-reloader')(module);
       this.#win.loadURL('http://localhost:4200');
