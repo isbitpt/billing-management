@@ -9,6 +9,7 @@ import {AuthenticationModule} from '@isbit/render/core/modules/authentication/au
 import {CONTAINERS} from '@isbit/render/features/starting-point/containers';
 import {StartingPointComponent} from '@isbit/render/features/starting-point/starting-point.component';
 import {DialogModule} from '@angular/cdk/dialog';
+import {ConfigurationModule} from '@isbit/render/core/modules/configuration/configuration.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {DialogModule} from '@angular/cdk/dialog';
     FormsModule,
     DialogModule,
     AuthenticationModule,
+    ConfigurationModule,
     CoreModule,
     ReactiveFormsModule,
     StartingPointRoutingModule

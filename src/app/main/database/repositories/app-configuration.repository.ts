@@ -1,37 +1,59 @@
 import {inject} from 'inversify';
 import {Repository} from 'typeorm/repository/Repository';
 import {DataSource} from 'typeorm';
-import {v4 as uuidv4} from 'uuid';
 import {provide} from 'inversify-binding-decorators';
 
 
 import {DatabaseSymbols} from '../database-symbols';
 import {AppConfigurationEntity} from '@isbit/main/database';
+import {AppConfigurationDomains} from '../../constants';
 
 @provide(AppConfigurationRepository)
 export class AppConfigurationRepository {
   #dbRepo: Repository<AppConfigurationEntity>;
 
-  constructor(@inject(DatabaseSymbols.applicationDatabaseSymbol) appDb: DataSource) {
+  constructor(
+    @inject(DatabaseSymbols.applicationDatabaseSymbol) appDb: DataSource) {
     this.#dbRepo = appDb.getRepository(AppConfigurationEntity);
   }
 
-  public async getConfigurationByName(configurationName: string): Promise<AppConfigurationEntity | null> {
+  public async getConfigurationByName(
+    configurationDomain: string,
+    configurationName: string): Promise<AppConfigurationEntity | null> {
     const configuration = await this.#dbRepo.findOneBy({
+      domain: configurationDomain,
       name: configurationName
     });
 
     return configuration;
   }
 
-  public async setConfigurationByName<T>(configurationName: string, value: T): Promise<AppConfigurationEntity> {
-    const existingConfiguration = await this.getConfigurationByName(configurationName);
+  public async getAllConfigurationByDomain(
+    configurationDomain: string): Promise<AppConfigurationEntity[] | null> {
+    const configurations = await this.#dbRepo.findBy({
+      domain: configurationDomain
+    });
+
+    return configurations;
+  }
+
+  public async setConfigurationByName<T>(
+    configurationName: string,
+    value: T): Promise<AppConfigurationEntity> {
+    return await this.setConfigurationByDomainAndName<T>(AppConfigurationDomains.AppConfig.domain, configurationName, value);
+  }
+
+  public async setConfigurationByDomainAndName<T>(
+    configurationDomain: string,
+    configurationName: string,
+    value: T): Promise<AppConfigurationEntity> {
+    const existingConfiguration = await this.getConfigurationByName(configurationDomain, configurationName);
 
     let updatedEntity: AppConfigurationEntity;
 
     if (existingConfiguration == null) {
       updatedEntity = this.#dbRepo.create({
-        id: uuidv4(),
+        domain: configurationDomain,
         name: configurationName,
         value: value.toString()
       });

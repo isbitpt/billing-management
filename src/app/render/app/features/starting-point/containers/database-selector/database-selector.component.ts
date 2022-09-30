@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {filter, takeUntil} from 'rxjs';
+import {filter, map, takeUntil, withLatestFrom} from 'rxjs';
 import {Dialog, DialogConfig, DialogRef} from '@angular/cdk/dialog';
 
 import {BaseComponent} from '@isbit/render/core/components';
@@ -19,6 +19,7 @@ import {
   RemoveDatabaseComponent, RemoveDatabaseDialogDataModel,
   RemoveDatabaseFormModel
 } from '@isbit/render/features/starting-point/containers/remove-database';
+import {ConfigurationService} from '@isbit/render/core/modules/configuration';
 
 @Component({
   selector: 'isbit-database-selector',
@@ -36,6 +37,7 @@ export class DatabaseSelectorComponent extends BaseComponent {
 
   constructor(
     private authService: AuthenticationService,
+    private configurationService: ConfigurationService,
     private formBuilder: FormBuilder,
     private dialog: Dialog
   ) {
@@ -134,6 +136,10 @@ export class DatabaseSelectorComponent extends BaseComponent {
         }
 
         this.authService.removeDatabase(result.id, result.confirmation, result.deleteDatabaseFile, result.privateKey);
+
+        this.authForm.patchValue({
+          selectedDatabase: null
+        });
       });
   }
 
@@ -148,20 +154,29 @@ export class DatabaseSelectorComponent extends BaseComponent {
     this.authService.databases$
       .pipe(
         takeUntil(this.ngUnsubscribe),
-      ).subscribe(databases => {
-        this.databases = databases || [];
+        withLatestFrom(
+          this.configurationService.lastSelectedDatabase$
+        ),
+        map(([databases, lastSelectedDatabase]) => ({
+          databases,
+          lastSelectedDatabase
+        }))
+      ).subscribe(databasesInfos => {
+        this.databases = databasesInfos.databases || [];
 
-        if (this.databases.length === 1) {
+        if (this.databases.some(database => database.id === databasesInfos.lastSelectedDatabase)) {
+          this.authForm.patchValue({
+            selectedDatabase: databasesInfos.lastSelectedDatabase
+          });
+        } else if(this.databases.length > 0){
           this.authForm.patchValue({
             selectedDatabase: this.databases[0].id
           });
-
-          return;
+        } else {
+          this.authForm.patchValue({
+            selectedDatabase: null
+          });
         }
-
-      this.authForm.patchValue({
-        selectedDatabase: null
-      });
     });
 
     this.authService.loggedDatabase$

@@ -4,13 +4,19 @@ import {provide} from 'inversify-binding-decorators';
 import {inject} from 'inversify';
 
 import {UserDatabase} from './models/user-database';
-import {PublicDatabaseEntity, UserDatabasesRepository, AppDatabaseRepository} from '@isbit/main/database';
+import {
+  PublicDatabaseEntity,
+  UserDatabasesRepository,
+  AppDatabaseRepository,
+  AppConfigurationRepository
+} from '@isbit/main/database';
 import {DatabaseManager} from '../database/database.manager';
 
-import {TYPES} from '../ioc';
+import {AppConfigurationDomains} from '../constants';
 
-@provide(TYPES.Service)
+@provide(AuthService)
 export class AuthService {
+  @inject(AppConfigurationRepository)  private appConfigurationRepository: AppConfigurationRepository;
   @inject(AppDatabaseRepository)  private appDatabaseRepository: AppDatabaseRepository;
   @inject(UserDatabasesRepository)  private userDatabasesRepository: UserDatabasesRepository;
 
@@ -35,6 +41,8 @@ export class AuthService {
     if (publicDatabase == null) {
       return null;
     }
+
+    await this.appConfigurationRepository.setConfigurationByName(AppConfigurationDomains.AppConfig.names.SelectedDatabase, selectedDatabase.id);
 
     return selectedDatabase;
   }

@@ -178,8 +178,12 @@ export class DatabaseManager {
 
     await this.#applicationDatabase.initialize();
 
-    if (!existsDb) {
-      await this.#applicationDatabase.synchronize();
+    const restartDatabase = (process.env.RESTART_DB || false ) === '1' || !existsDb;
+
+    if (restartDatabase) {
+      console.log('Restarting app database!');
     }
+
+    await this.#applicationDatabase.synchronize(restartDatabase);
   }
 }

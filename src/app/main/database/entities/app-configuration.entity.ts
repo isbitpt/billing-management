@@ -1,11 +1,12 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity} from 'typeorm';
+import {PrimaryColumn} from 'typeorm/decorator/columns/PrimaryColumn';
 
 @Entity()
 export class AppConfigurationEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn()
+  domain: string;
 
-  @Column()
+  @PrimaryColumn()
   name: string;
 
   @Column()

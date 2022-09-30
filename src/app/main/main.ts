@@ -36,13 +36,6 @@ class App {
     await EventManager.registerEvents(this.#container);
     this.registerElectronEvents();
 
-    const testDb = (process.env.TEST_DB || false ) === '1';
-
-    if (testDb) {
-      const authenticationService = this.#container.get<AuthService>(TYPES.Service);
-      await authenticationService.createDatabase(__dirname, `TestBd${Math.random()}`, '123das');
-    }
-
     await app.whenReady();
 
     await installExtension(REDUX_DEVTOOLS);
