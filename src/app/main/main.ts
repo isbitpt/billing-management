@@ -1,17 +1,14 @@
-import {buildSplashWindow} from './windows/splash-window.window';
-
 require('dotenv').config();
 import 'reflect-metadata';
 
-import { app, BrowserWindow } from 'electron';
-
+import {app} from 'electron';
 import installExtension, { REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import {Container} from 'inversify';
 
 import {IoCManager} from './ioc/ioc.manager';
 import {DatabaseManager} from './database/database.manager';
 import {EventManager} from './events/event.manager';
-import {buildMainWindow} from './windows/main-window.window';
+import {buildSplashWindow, buildMainWindow} from './windows';
 
 const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
@@ -35,14 +32,15 @@ class App {
 
     await app.whenReady();
 
-    await installExtension(REDUX_DEVTOOLS);
+    if (serve) {
+      await installExtension(REDUX_DEVTOOLS);
+    }
 
     await this.createWindows();
   }
 
   private async registerElectronEvents(): Promise<void> {
     try {
-      // Quit when all windows are closed.
       app.on('window-all-closed', async () => {
         await DatabaseManager.close();
 

@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import {provide} from 'inversify-binding-decorators';
 import {inject} from 'inversify';
 
-import {UserDatabase} from './models/user-database';
+import {UserDatabase} from './models';
 import {
   PublicDatabaseEntity,
   UserDatabasesRepository,
@@ -42,7 +42,8 @@ export class AuthService {
       return null;
     }
 
-    await this.appConfigurationRepository.setConfigurationByName(AppConfigurationDomains.AppConfig.names.SelectedDatabase, selectedDatabase.id);
+    await this.appConfigurationRepository
+      .setConfigurationByName(AppConfigurationDomains.AppConfig.names.SelectedDatabase, selectedDatabase.id);
 
     return selectedDatabase;
   }
