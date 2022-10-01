@@ -32,7 +32,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "app/render/favicon.ico",
-              "app/render/assets"
+              "app/render/assets",
+              "app/render/splash.html"
             ],
             "styles": [
               "app/render/styles.scss"
