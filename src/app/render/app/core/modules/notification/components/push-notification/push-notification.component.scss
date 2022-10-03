@@ -1,0 +1,50 @@
+.info {
+  background-color: #bee5eb;
+  color: #0c5460;
+  transition: 0.5s;
+
+  &:hover {
+    background-color: #b0e2e8;
+    transition: 0.5s;
+  }
+}
+.success {
+  background-color: #c3e6cb;
+  color: #155724;
+  transition: 0.5s;
+
+  &:hover {
+    background-color: #b1e7bc;
+    transition: 0.5s;
+  }
+}
+.warning {
+  background-color: #ffeeba;
+  color: #856404;
+  transition: 0.5s;
+
+  &:hover {
+    background-color: #ffeeab;
+    transition: 0.5s;
+  }
+}
+.error {
+  background-color: #f5c6cb;
+  color: #721c24;
+  transition: 0.5s;
+
+  &:hover {
+    background-color: #efb0b6;
+    transition: 0.5s;
+  }
+}
+
+.dismiss {
+  &:hover {
+    color: black;
+  }
+}
+
+.dismissing {
+  transform: translateX(100%);
+}

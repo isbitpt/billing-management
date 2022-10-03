@@ -1,0 +1,6 @@
+<div #notification class="flex flex-row w-full h-full rounded-tl-2xl rounded-bl-2xl {{options.notificationType}}">
+  <div class="flex flex-row p-2 items-center h-full w-full">
+    <h1 class="text-xl w-11/12">{{options.message}}</h1>
+    <h1 class="dismiss text-xl w-1/12" (click)="dismiss()">X</h1>
+  </div>
+</div>
