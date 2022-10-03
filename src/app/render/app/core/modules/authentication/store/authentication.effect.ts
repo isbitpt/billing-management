@@ -20,6 +20,8 @@ import {
 } from '@isbit/render/core/modules/authentication/store';
 
 import * as sharedModels from '@isbit/shared';
+import {NotificationService} from '@isbit/render/core/modules/notification';
+import {PushNotificationTypeModel} from '@isbit/render/core/modules/notification/models';
 
 @Injectable()
 export class AuthenticationEffect {
@@ -64,7 +66,10 @@ export class AuthenticationEffect {
       }))),
       tap(a => {
         if (!a.payload.success) {
-          alert('Failed to login.');
+          this.notificationService.createPushNotification({
+            notificationType: PushNotificationTypeModel.warning,
+            message: 'Failed to login'
+          });
           return;
         }
 
@@ -120,12 +125,18 @@ export class AuthenticationEffect {
       mergeMap(res => {
 
         if (res == null) {
-          alert('Failed to import database');
+          this.notificationService.createPushNotification({
+            notificationType: PushNotificationTypeModel.warning,
+            message: 'Failed to import existing database'
+          });
 
           return EMPTY;
         }
 
-        alert('Database imported');
+        this.notificationService.createPushNotification({
+          notificationType: PushNotificationTypeModel.success,
+          message: 'Database imported'
+        });
 
         return [
           ImportDatabaseCompleteAction(res),
@@ -156,12 +167,18 @@ export class AuthenticationEffect {
       }),
       mergeMap(res => {
         if (!res || !res.success) {
-          alert('Failed to remove database');
+          this.notificationService.createPushNotification({
+            notificationType: PushNotificationTypeModel.warning,
+            message: 'Failed to remove database'
+          });
 
           return EMPTY;
         }
 
-        alert('Database removed');
+        this.notificationService.createPushNotification({
+          notificationType: PushNotificationTypeModel.success,
+          message: 'Database removed'
+        });
 
         return [
           RemoveDatabaseCompleteAction({removed: res.success}),
@@ -174,6 +191,7 @@ export class AuthenticationEffect {
   constructor(
     private router: Router,
     private actions$: Actions,
-    private electronService: ElectronService
+    private electronService: ElectronService,
+    private notificationService: NotificationService
   ) {}
 }

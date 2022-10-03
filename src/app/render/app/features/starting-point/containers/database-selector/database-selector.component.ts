@@ -16,10 +16,13 @@ import {
   SelectDatabaseFormModel
 } from '@isbit/render/features/starting-point/containers/select-database';
 import {
-  RemoveDatabaseComponent, RemoveDatabaseDialogDataModel,
+  RemoveDatabaseComponent,
+  RemoveDatabaseDialogDataModel,
   RemoveDatabaseFormModel
 } from '@isbit/render/features/starting-point/containers/remove-database';
 import {ConfigurationService} from '@isbit/render/core/modules/configuration';
+import {NotificationService} from '@isbit/render/core/modules/notification';
+import {PushNotificationTypeModel} from '@isbit/render/core/modules/notification/models';
 
 @Component({
   selector: 'isbit-database-selector',
@@ -39,7 +42,8 @@ export class DatabaseSelectorComponent extends BaseComponent {
     private authService: AuthenticationService,
     private configurationService: ConfigurationService,
     private formBuilder: FormBuilder,
-    private dialog: Dialog
+    private dialog: Dialog,
+    private notificationService: NotificationService
   ) {
     super();
 
@@ -55,7 +59,10 @@ export class DatabaseSelectorComponent extends BaseComponent {
 
   public authToDb(): void {
     if (this.authForm.invalid) {
-      alert('Invalid form input');
+      this.notificationService.createPushNotification({
+        notificationType: PushNotificationTypeModel.warning,
+        message: 'Please select a database and fill its password'
+      });
       return;
     }
 
@@ -112,7 +119,10 @@ export class DatabaseSelectorComponent extends BaseComponent {
     const selectedDatabaseControl = this.authForm.get(this.authFormKeys.selectedDatabase);
 
     if (selectedDatabaseControl.invalid) {
-      alert('Invalid Database selected');
+      this.notificationService.createPushNotification({
+        notificationType: PushNotificationTypeModel.warning,
+        message: 'Invalid Database selected'
+      });
       return;
     }
 
@@ -178,15 +188,6 @@ export class DatabaseSelectorComponent extends BaseComponent {
           });
         }
     });
-
-    this.authService.loggedDatabase$
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        filter(db => !!db)
-      )
-      .subscribe(db => {
-        alert(`Logged in to the Bd '${db.name}'`);
-      });
 
     this.authService.getDatabases();
   }

@@ -5,6 +5,8 @@ import {BaseComponent} from '@isbit/render/core/components';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import * as models from './models';
+import {PushNotificationTypeModel} from '@isbit/render/core/modules/notification/models';
+import {NotificationService} from '@isbit/render/core/modules/notification';
 
 @Component({
   selector: 'isbit-remove-database',
@@ -20,6 +22,7 @@ export class RemoveDatabaseComponent extends BaseComponent{
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: DialogRef,
+    private notificationService: NotificationService,
     @Inject(DIALOG_DATA) public data: models.RemoveDatabaseDialogDataModel
   ) {
     super();
@@ -31,12 +34,18 @@ export class RemoveDatabaseComponent extends BaseComponent{
 
   public removeDatabase(): void {
     if (this.removeDatabaseForm.get(this.removeDatabaseFormFields.confirmation).invalid) {
-      alert('Must confirm database removal');
+      this.notificationService.createPushNotification({
+        notificationType: PushNotificationTypeModel.warning,
+        message: 'Must confirm database removal'
+      });
       return;
     }
 
     if (this.removeDatabaseForm.invalid) {
-      alert('Invalid form data');
+      this.notificationService.createPushNotification({
+        notificationType: PushNotificationTypeModel.warning,
+        message: 'Must fill the database password'
+      });
       return;
     }
 

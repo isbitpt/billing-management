@@ -5,6 +5,8 @@ import {BaseComponent} from '@isbit/render/core/components';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import * as models from './models';
+import {NotificationService} from '@isbit/render/core/modules/notification';
+import {PushNotificationTypeModel} from '@isbit/render/core/modules/notification/models';
 
 @Component({
   selector: 'isbit-select-database',
@@ -24,7 +26,8 @@ export class SelectDatabaseComponent extends BaseComponent{
 
   constructor(
     private formBuilder: FormBuilder,
-    private dialogRef: DialogRef
+    private dialogRef: DialogRef,
+    private notificationService: NotificationService
   ) {
     super();
 
@@ -35,7 +38,10 @@ export class SelectDatabaseComponent extends BaseComponent{
 
   public selectDatabase(): void {
     if (this.selectDatabaseForm.invalid) {
-      alert('Invalid form data');
+      this.notificationService.createPushNotification({
+        notificationType: PushNotificationTypeModel.warning,
+        message: 'Make sure to select the \'.sqlite\' file and fill its password'
+      });
       return;
     }
 

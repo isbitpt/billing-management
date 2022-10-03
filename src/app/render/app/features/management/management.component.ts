@@ -18,12 +18,4 @@ export class ManagementComponent implements OnInit {
   public goBack(): void {
     this.router.navigate(['/']);
   }
-
-  public handlerCreateNewDatabase(): void{
-    alert('Create new database');
-  }
-
-  public handlerSelectDatabase(): void{
-    alert('handlerSelectDatabase is clicked');
-  }
 }

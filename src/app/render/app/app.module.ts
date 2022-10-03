@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import {APP_CONFIG} from '../environments/environment';
+import {NotificationModule} from '@isbit/render/core/modules/notification/notification.module';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -27,10 +28,11 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new Transla
     APP_CONFIG.production ? [] : StoreDevtoolsModule.instrument({
       maxAge: 50
     }),
-    CoreModule,
+    NotificationModule,
     BrowserModule,
-    FormsModule,
     HttpClientModule,
+    CoreModule,
+    FormsModule,
     DialogModule,
     TranslateModule.forRoot({
       loader: {

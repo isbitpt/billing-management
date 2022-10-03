@@ -5,6 +5,8 @@ import {BaseComponent} from '@isbit/render/core/components';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import * as models from './models';
+import {PushNotificationTypeModel} from '@isbit/render/core/modules/notification/models';
+import {NotificationService} from '@isbit/render/core/modules/notification';
 
 @Component({
   selector: 'isbit-create-database',
@@ -19,7 +21,8 @@ export class CreateDatabaseComponent extends BaseComponent{
 
   constructor(
     private formBuilder: FormBuilder,
-    private dialogRef: DialogRef
+    private dialogRef: DialogRef,
+    private notificationService: NotificationService
   ) {
     super();
 
@@ -30,7 +33,10 @@ export class CreateDatabaseComponent extends BaseComponent{
 
   public createDatabase(): void {
     if (this.createDatabaseForm.invalid) {
-      alert('Invalid form data');
+      this.notificationService.createPushNotification({
+        notificationType: PushNotificationTypeModel.warning,
+        message: 'Make sure to select where the database will be stored and set its name and password'
+      });
       return;
     }
 

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 
-// If you import a module but never use any of the imported values other than as TypeScript types,
-// the resulting javascript file will look as if you never imported the module at all.
 import { IpcRenderer, Dialog } from 'electron';
 import {Observable} from 'rxjs';
 import {fromPromise} from 'rxjs/internal/observable/innerFrom';
+import * as Electron from 'electron';
+
+import * as sharedModels from '@isbit/shared';
+import {NotificationService} from '@isbit/render/core/modules/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +16,16 @@ export class ElectronService {
 
   private ipcRenderer: IpcRenderer | any;
 
-  constructor() {
+  constructor(
+    private notificationService: NotificationService
+  ) {
     if (this.isElectron) {
       const electron = window.require('electron');
 
       this.ipcRenderer = electron.ipcRenderer;
       this.dialog = electron.dialog;
+
+      this.setEvents();
     } else {
       this.ipcRenderer = {
         async invoke(event: string, ...args: any): Promise<any> {
@@ -37,5 +43,12 @@ export class ElectronService {
 
   public invokeEvent<TValue>(eventName: string, ...args: any[]): Observable<TValue> {
     return fromPromise(this.ipcRenderer.invoke(eventName, ...args));
+  }
+
+  private setEvents(): void {
+    this.ipcRenderer
+      .on('renderer:createPushNotification', (event: Electron.IpcRendererEvent, options: sharedModels.PushNotificationOptionsModel) => {
+      this.notificationService.createPushNotification(options);
+    });
   }
 }

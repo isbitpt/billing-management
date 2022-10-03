@@ -10,6 +10,7 @@ import {CONTAINERS} from '@isbit/render/features/starting-point/containers';
 import {StartingPointComponent} from '@isbit/render/features/starting-point/starting-point.component';
 import {DialogModule} from '@angular/cdk/dialog';
 import {ConfigurationModule} from '@isbit/render/core/modules/configuration/configuration.module';
+import {NotificationModule} from '@isbit/render/core/modules/notification/notification.module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {ConfigurationModule} from '@isbit/render/core/modules/configuration/conf
     ConfigurationModule,
     CoreModule,
     ReactiveFormsModule,
+    NotificationModule,
     StartingPointRoutingModule
   ]
 })
