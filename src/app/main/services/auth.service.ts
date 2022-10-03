@@ -5,10 +5,10 @@ import {inject} from 'inversify';
 
 import {UserDatabase} from './models';
 import {
-  PublicDatabaseEntity,
-  UserDatabasesRepository,
+  AppConfigurationRepository,
   AppDatabaseRepository,
-  AppConfigurationRepository
+  PublicDatabaseEntity,
+  UserDatabasesRepository
 } from '@isbit/main/database';
 import {DatabaseManager} from '../database/database.manager';
 

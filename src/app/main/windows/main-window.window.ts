@@ -4,7 +4,19 @@ import * as path from 'path';
 
 let window: BrowserWindow = null;
 
+export const getMainWindowWebContents = () => {
+  if (window == null) {
+    throw new Error('Must create main window before obtain its web contents');
+  }
+
+  return window.webContents;
+};
+
 export const buildMainWindow = async () => {
+  if (window != null) {
+    throw new Error('Can only create this window once');
+  }
+
   const serve = process.env.SERVE === '1';
 
   const size = screen.getPrimaryDisplay().workAreaSize;
